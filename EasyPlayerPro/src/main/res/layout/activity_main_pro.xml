@@ -15,18 +15,59 @@
             android:layout_gravity="center"
             android:background="#000000">
 
-            <org.easydarwin.easyplayer.views.ProVideoView
-                android:id="@+id/video_view2"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:keepScreenOn="true"
-                android:visibility="gone"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <org.easydarwin.easyplayer.views.ProVideoView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:keepScreenOn="true"
-                android:layout_height="match_parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <org.easydarwin.easyplayer.views.ProVideoView
+                        android:id="@+id/video_view2"
+                        android:layout_width="0dp"
+                        android:keepScreenOn="true"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <org.easydarwin.easyplayer.views.ProVideoView
+                        android:id="@+id/video_view"
+                        android:layout_width="0dp"
+                        android:keepScreenOn="true"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <org.easydarwin.easyplayer.views.ProVideoView
+                        android:id="@+id/video_view3"
+                        android:layout_width="0dp"
+                        android:keepScreenOn="true"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <org.easydarwin.easyplayer.views.ProVideoView
+                        android:id="@+id/video_view4"
+                        android:layout_width="0dp"
+                        android:keepScreenOn="true"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <ImageView
                 android:id="@+id/surface_cover"

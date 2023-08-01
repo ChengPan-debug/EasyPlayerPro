@@ -79,7 +79,7 @@ public class ProVideoView extends IjkVideoView implements VideoControllerView.Fu
     public boolean isFullScreen() {
         if (getContext() instanceof ProVideoActivity) {
             ProVideoActivity pro = (ProVideoActivity) getContext();
-            return pro.isLandscape();
+//            return pro.isLandscape();
         }
 
         return false;
@@ -89,7 +89,7 @@ public class ProVideoView extends IjkVideoView implements VideoControllerView.Fu
     public void toggleFullScreen() {
         if (getContext() instanceof ProVideoActivity) {
             ProVideoActivity pro = (ProVideoActivity) getContext();
-            pro.onChangeOrientation(null);
+//            pro.onChangeOrientation(null);
         }
     }
 
@@ -198,7 +198,7 @@ public class ProVideoView extends IjkVideoView implements VideoControllerView.Fu
     public void takePicture() {
         if (getContext() instanceof ProVideoActivity){
             ProVideoActivity pro = (ProVideoActivity) getContext();
-            pro.onTakePicture(null);
+//            pro.onTakePicture(null);
         }
     }
 
@@ -206,7 +206,7 @@ public class ProVideoView extends IjkVideoView implements VideoControllerView.Fu
     public void toggleMode() {
         if (getContext() instanceof ProVideoActivity) {
             ProVideoActivity pro = (ProVideoActivity) getContext();
-            pro.onChangePlayMode(null);
+//            pro.onChangePlayMode(null);
         }
     }
 

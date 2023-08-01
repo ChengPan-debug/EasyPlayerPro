@@ -83,11 +83,7 @@ public class PlayListActivity extends AppCompatActivity implements View.OnClickL
         mCursor = TheApp.sDB.query(VideoSource.TABLE_NAME, null, null, null, null, null, null);
         if (!mCursor.moveToFirst()) {
             List<String> urls = new ArrayList<>();
-            urls.add("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov");
-            urls.add("rtmp://live.hkstv.hk.lxdns.com/live/hks2");
-            urls.add("http://www.easydarwin.org/public/video/3/video.m3u8");
-            urls.add("http://m4.pptvyun.com/pvod/e11a0/ijblO6coKRX6a8NEQgg8LDZcqPY/eyJkbCI6MTUxNjYyNTM3NSwiZXMiOjYwNDgwMCwiaWQiOiIwYTJkbnEtWG82S2VvcTZMNEsyZG9hZmhvNkNjbTY2WXB3IiwidiI6IjEuMCJ9/0a2dnq-Xo6Keoq6L4K2doafho6Ccm66Ypw.mp4");
-
+            urls.add("rtsp://192.168.20.222:8554/10002/20230801172457");
             for (String url : urls) {
                 ContentValues cv = new ContentValues();
                 cv.put(VideoSource.URL, url);

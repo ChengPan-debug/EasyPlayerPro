@@ -17,6 +17,7 @@ package org.easydarwin.easyplayer;
  */
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -71,18 +72,19 @@ public class ProVideoActivity extends AppCompatActivity {
     private Uri mVideoUri;
 
     private ActivityMainProBinding mBinding;
-    private ProVideoView mVideoView;        // 播放器View
+    private ProVideoView mVideoView,mVideoView2,mVideoView3,mVideoView4;        // 播放器View
     private View mProgress;
 
     private GestureDetector detector;
 
-    private VideoControllerView mediaController;
+    private VideoControllerView mediaController,mediaController2,mediaController3,mediaController4;
     private MediaScannerConnection mScanner;
 
     private Runnable mSpeedCalcTask;
 
     private int mMode;                      // 画面模式
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,115 +146,117 @@ public class ProVideoActivity extends AppCompatActivity {
 
         mediaController = new VideoControllerView(this);
         mediaController.setMediaPlayer(mBinding.videoView);
+        mediaController2 = new VideoControllerView(this);
+        mediaController2.setMediaPlayer(mBinding.videoView2);
+        mediaController3 = new VideoControllerView(this);
+        mediaController3.setMediaPlayer(mBinding.videoView3);
+        mediaController4 = new VideoControllerView(this);
+        mediaController4.setMediaPlayer(mBinding.videoView4);
         mVideoView = mBinding.videoView;
-        mVideoView.setMediaController(mediaController);
+        mVideoView2 = mBinding.videoView2;
+        mVideoView3 = mBinding.videoView3;
+        mVideoView4 = mBinding.videoView4;
+//        mVideoView.setMediaController(mediaController);
 
         mProgress = findViewById(android.R.id.progress);
-        mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(IMediaPlayer iMediaPlayer, int arg1, int arg2) {
-                switch (arg1) {
-                    case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                        Log.i(TAG, "MEDIA_INFO_VIDEO_TRACK_LAGGING");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                        Log.i(TAG, "MEDIA_INFO_VIDEO_RENDERING_START");
-                        mProgress.setVisibility(View.GONE);
-                        mBinding.surfaceCover.setVisibility(View.GONE);
-                        mBinding.playerContainer.setVisibility(View.GONE);
-                        mBinding.videoView.setVisibility(View.VISIBLE);
-                        mBinding.videoView2.setVisibility(View.VISIBLE);
+        mVideoView .setOnInfoListener((iMediaPlayer, arg1, arg2) -> {
+            switch (arg1) {
+                case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
+                    Log.i(TAG, "MEDIA_INFO_VIDEO_TRACK_LAGGING");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                    Log.i(TAG, "MEDIA_INFO_VIDEO_RENDERING_START");
+                    mProgress.setVisibility(View.GONE);
+                    mBinding.surfaceCover.setVisibility(View.GONE);
+                    mBinding.playerContainer.setVisibility(View.GONE);
+                    mBinding.videoView.setVisibility(View.VISIBLE);
+                    mBinding.videoView2.setVisibility(View.VISIBLE);
 
-                        // 快照
-                        File file = FileUtil.getSnapshotFile(mVideoPath);
-                        mVideoView.takePicture(file.getPath());
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                        Log.i(TAG, "MEDIA_INFO_BUFFERING_START");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        Log.i(TAG, "MEDIA_INFO_BUFFERING_END");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
-                        Log.i(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
-                        Log.i(TAG, "MEDIA_INFO_BAD_INTERLEAVING");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
-                        Log.i(TAG, "MEDIA_INFO_NOT_SEEKABLE");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_METADATA_UPDATE:
-                        Log.i(TAG, "MEDIA_INFO_METADATA_UPDATE");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
-                        Log.i(TAG, "MEDIA_INFO_UNSUPPORTED_SUBTITLE");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
-                        Log.i(TAG, "MEDIA_INFO_SUBTITLE_TIMED_OUT");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
-                        Log.i(TAG, "MEDIA_INFO_VIDEO_ROTATION_CHANGED");
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
-                        Log.i(TAG, "MEDIA_INFO_AUDIO_RENDERING_START");
-                        break;
-                }
-
-                return false;
+                    // 快照
+                    File file = FileUtil.getSnapshotFile(mVideoPath);
+                    mVideoView.takePicture(file.getPath());
+                    mVideoView2.takePicture(file.getPath());
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    Log.i(TAG, "MEDIA_INFO_BUFFERING_START");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    Log.i(TAG, "MEDIA_INFO_BUFFERING_END");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
+                    Log.i(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
+                    Log.i(TAG, "MEDIA_INFO_BAD_INTERLEAVING");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                    Log.i(TAG, "MEDIA_INFO_NOT_SEEKABLE");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_METADATA_UPDATE:
+                    Log.i(TAG, "MEDIA_INFO_METADATA_UPDATE");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
+                    Log.i(TAG, "MEDIA_INFO_UNSUPPORTED_SUBTITLE");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
+                    Log.i(TAG, "MEDIA_INFO_SUBTITLE_TIMED_OUT");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
+                    Log.i(TAG, "MEDIA_INFO_VIDEO_ROTATION_CHANGED");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+                    Log.i(TAG, "MEDIA_INFO_AUDIO_RENDERING_START");
+                    break;
             }
+
+            return false;
         });
 
-        mVideoView.setOnErrorListener(new IMediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
-                Log.i(TAG, "播放错误");
-                mBinding.videoView.setVisibility(View.GONE);
-                mBinding.videoView2.setVisibility(View.GONE);
-                mProgress.setVisibility(View.GONE);
-                mBinding.playerContainer.setVisibility(View.VISIBLE);
-
-                mVideoView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mVideoView.reStart();
-                    }
-                }, 5000);
-
-                return true;
-            }
-        });
-
-        mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(IMediaPlayer iMediaPlayer) {
-                Log.i(TAG, "播放完成");
-                mProgress.setVisibility(View.GONE);
-
-                if (mVideoPath.toLowerCase().startsWith("rtsp") ||
-                        mVideoPath.toLowerCase().startsWith("rtmp") ||
-                        mVideoPath.toLowerCase().startsWith("http")) {
-                    mVideoView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mVideoView.reStart();
-                        }
-                    }, 5000);
-                }
-            }
-        });
-
-        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(IMediaPlayer iMediaPlayer) {
-                Log.i(TAG, String.format("onPrepared"));
-            }
-        });
+//        mVideoView.setOnErrorListener((iMediaPlayer, i, i1) -> {
+//            Log.i(TAG, "播放错误");
+//            mBinding.videoView.setVisibility(View.GONE);
+//            mBinding.videoView2.setVisibility(View.GONE);
+//            mProgress.setVisibility(View.GONE);
+//            mBinding.playerContainer.setVisibility(View.VISIBLE);
+//
+//            mVideoView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mVideoView.reStart();
+//                }
+//            }, 5000);
+//
+//            return true;
+//        });
+//
+//        mVideoView.setOnCompletionListener(iMediaPlayer -> {
+//            Log.i(TAG, "播放完成");
+//            mProgress.setVisibility(View.GONE);
+//
+//            if (mVideoPath.toLowerCase().startsWith("rtsp") ||
+//                    mVideoPath.toLowerCase().startsWith("rtmp") ||
+//                    mVideoPath.toLowerCase().startsWith("http")) {
+//                mVideoView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mVideoView.reStart();
+//                    }
+//                }, 5000);
+//            }
+//        });
+//
+//        mVideoView.setOnPreparedListener(iMediaPlayer -> Log.i(TAG, String.format("onPrepared")));
 
         if (mVideoPath != null) {
             mVideoView.setVideoPath(mVideoPath);
+            mVideoView2.setVideoPath(mVideoPath);
+            mVideoView3.setVideoPath(mVideoPath);
+            mVideoView4.setVideoPath(mVideoPath);
         } else if (mVideoUri != null) {
             mVideoView.setVideoURI(mVideoUri);
+            mVideoView2.setVideoURI(mVideoUri);
+            mVideoView3.setVideoURI(mVideoUri);
+            mVideoView4.setVideoURI(mVideoUri);
         } else {
             Log.e(TAG, "Null Data Source\n");
             finish();
@@ -261,24 +265,18 @@ public class ProVideoActivity extends AppCompatActivity {
 
         mVideoView.start();
 
+        mVideoView2.start();
+
+        mVideoView3.start();
+
+        mVideoView4.start();
+
         GestureDetector.SimpleOnGestureListener listener = new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-//                if (!isLandscape() && mMode == 3) {
-//                    if (mFullScreenMode) {
-//                        mMode = mVideoView.toggleAspectRatio();
-//                        mBinding.playerContainer.setVisibility(View.VISIBLE);
-//                        mFullScreenMode = false;
-//                    } else {
-//                        mFullScreenMode = true;
-//                        mBinding.playerContainer.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    mMode = mVideoView.toggleAspectRatio();
-//                }
-
                 if (mVideoView.isInPlaybackState()) {
                     mVideoView.toggleMediaControlsVisibility();
+                    mVideoView2.toggleMediaControlsVisibility();
                     return true;
                 }
 
@@ -287,20 +285,16 @@ public class ProVideoActivity extends AppCompatActivity {
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-//                setRequestedOrientation(isLandscape() ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 return true;
             }
         };
 
         detector = new GestureDetector(this, listener);
 
-        mVideoView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                detector.onTouchEvent(event);
+        mVideoView.setOnTouchListener((v, event) -> {
+            detector.onTouchEvent(event);
 
-                return true;
-            }
+            return true;
         });
 
         mSpeedCalcTask = new Runnable() {
@@ -323,32 +317,20 @@ public class ProVideoActivity extends AppCompatActivity {
 
         mVideoView.post(mSpeedCalcTask);
 
-        if (BuildConfig.DEBUG) {
-            mBinding.videoView2.setVideoPath("rtmp://13088.liveplay.myqcloud.com/live/13088_65829b3d3e");
-            mBinding.videoView2.setShowing(false);
-            mBinding.videoView2.start();
-        }
+//        if (BuildConfig.DEBUG) {
+//            mBinding.videoView2.setVideoPath("rtmp://13088.liveplay.myqcloud.com/live/13088_65829b3d3e");
+//            mBinding.videoView2.setShowing(false);
+//            mBinding.videoView2.start();
+//        }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        if (mVideoView != null) {
-//            mVideoView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mVideoView.reStart();
-//                }
-//            }, 5000);
-//        }
-//    }
 
     @Override
     protected void onStop() {
         super.onStop();
 
         mVideoView.stopPlayback();
+        mVideoView2.stopPlayback();
 
         if (BuildConfig.DEBUG) {
             mBinding.videoView2.stopPlayback();
@@ -365,110 +347,4 @@ public class ProVideoActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (REQUEST_WRITE_STORAGE == requestCode){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                doTakePicture();
-            }
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        LinearLayout container = mBinding.playerContainer;
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setNavVisibility(false);
-            // 横屏情况 播放窗口横着排开
-            container.setOrientation(LinearLayout.HORIZONTAL);
-        } else {
-            // 竖屏,取消全屏状态
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setNavVisibility(true);
-            // 竖屏情况 播放窗口竖着排开
-            container.setOrientation(LinearLayout.VERTICAL);
-        }
-    }
-
-    public boolean isLandscape() {
-        int orientation = getResources().getConfiguration().orientation;
-        return orientation == ORIENTATION_LANDSCAPE;
-    }
-
-    public void setNavVisibility(boolean visible) {
-        if (!ViewConfigurationCompat.hasPermanentMenuKey(ViewConfiguration.get(this))) {
-            int newVis = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            if (!visible) {
-                // } else {
-                // newVis &= ~(View.SYSTEM_UI_FLAG_LOW_PROFILE |
-                // View.SYSTEM_UI_FLAG_FULLSCREEN |
-                // View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-                newVis |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
-            }
-
-            // If we are now visible, schedule a timer for us to go invisible. Set the new desired visibility.
-            getWindow().getDecorView().setSystemUiVisibility(newVis);
-        }
-    }
-
-    public void onChangeOrientation(View view) {
-        setRequestedOrientation(isLandscape() ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    public void onChangePlayMode(View view) {
-        mMode = mVideoView.toggleAspectRatio();
-        Log.i(TAG, "画面模式：" + mMode);
-    }
-
-    /*
-    * 截图
-    * */
-    public void onTakePicture(View view) {
-        if (mVideoView.isInPlaybackState()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
-            } else {
-                doTakePicture();
-            }
-        }
-    }
-
-    private void doTakePicture() {
-        File file = new File(FileUtil.getPicturePath());
-        file.mkdirs();
-
-        file = new File(file, "pic_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".jpg");
-        final String picture = mVideoView.takePicture(file.getPath());
-
-        if (!TextUtils.isEmpty(picture)) {
-            Toast.makeText(ProVideoActivity.this,"图片已保存", Toast.LENGTH_SHORT).show();
-
-            if (mScanner == null) {
-                MediaScannerConnection connection = new MediaScannerConnection(ProVideoActivity.this, new MediaScannerConnection.MediaScannerConnectionClient() {
-                    public void onMediaScannerConnected() {
-                        mScanner.scanFile(picture, "image/jpeg");
-                    }
-
-                    public void onScanCompleted(String path1, Uri uri) {
-
-                    }
-                });
-
-                try {
-                    connection.connect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                mScanner = connection;
-            } else {
-                mScanner.scanFile(picture, "image/jpeg");
-            }
-        }
-    }
 }
